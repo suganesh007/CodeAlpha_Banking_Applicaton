@@ -1,2 +1,2 @@
 TASK 2 :
-  CodeAlpha_Banking_Apllication
+   CodeAlpha_Banking_Application
