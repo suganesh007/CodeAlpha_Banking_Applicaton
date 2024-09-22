@@ -1,7 +1,6 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
 class Question_cls
 {   
     int ques_length = 5;
@@ -13,39 +12,29 @@ class Question_cls
         this.ques_length = length;
     }
 
-    // specific string
-    //void print(int arrayValue)
-    //{
-    //    System.out.println(question[arrayValue]);
-    //}
-
     // print all string
     void printAll()
     {
         System.out.println("\n");
         for (int i = 0; i < ques_length; i++)
         {
-            System.out.println((i+1) + " " + question[i]);
+            System.out.println((i + 1) + " " + question[i]);
         }
         System.out.println("\n");
     }
-
 }
-
 
 class functions
 {
-
-    private static float Curr_Balance = 0;
+    private float Curr_Balance = 0; // Now non-static to allow multiple instances
 
     @SuppressWarnings("resource")
     static int ErrorCheck(int start, int limit)
     {
-        
         Scanner in = new Scanner(System.in);
         int option = 0;
-        boolean ValidInput = false;
-        while(!ValidInput)
+        boolean validInput = false;
+        while(!validInput)
         {
             try
             {
@@ -53,110 +42,107 @@ class functions
                 option = in.nextInt();
                 if (option >= start && option <= limit)
                 {
-                    ValidInput = true;
+                    validInput = true;
                 }
                 else if (option > 10000 && start == 1 && limit == 10000)
                 {
-                    System.err.println("Limited Exceeds above 10,000");
+                    System.err.println("Limit Exceeds above 10,000");
                 }
                 else
-                System.err.println("you entered the wrong Value !");
+                {
+                    System.err.println("You entered the wrong value!");
+                }
             }
-
             catch (InputMismatchException e)
             {
-                System.err.println("only numbers are allowed !");
-                in.next();
+                System.err.println("Only numbers are allowed!");
+                in.next(); // Clear invalid input
             }
         }
         return option;
     }
 
-    void Deposit(int deposit_amount)
+    void Deposit(int depositAmount)
     {
-        if (deposit_amount > 0)
+        if (depositAmount > 0)
         {
-            Curr_Balance += deposit_amount;
+            Curr_Balance += depositAmount;
+            System.err.println("Deposited Rs." + depositAmount);
         }
         else
         {
-            System.err.println("Invalid Amount");
+            System.err.println("Invalid amount.");
         }
-
     }
 
-    void Withdrawal(int withdraw_amount)
+    void Withdrawal(int withdrawAmount)
     {
-        if (withdraw_amount > 0 && Curr_Balance >= withdraw_amount)
+        if (withdrawAmount > 0 && Curr_Balance >= withdrawAmount)
         {
-            Curr_Balance -= withdraw_amount;
-            System.err.println("Withdrawal amount is rs." + withdraw_amount);
+            Curr_Balance -= withdrawAmount;
+            System.err.println("Withdrew Rs." + withdrawAmount);
         }
-        else if (Curr_Balance <= 0)
+        else if (Curr_Balance < withdrawAmount)
         {
-            System.err.println("You have 0.00 balance");
+            System.err.println("Insufficient balance. Your current balance is Rs." + Curr_Balance);
         }
         else
         {
-            System.err.println("Invalid Amount");
+            System.err.println("Invalid amount.");
         }
-
     }
 
     void BalanceCheck()
     {
-        System.err.println("Your current Balance is rs." + Curr_Balance);
+        System.err.println("Your current balance is Rs." + Curr_Balance);
     }
 
     void Exit()
     {
-        System.out.println("Thanks for the Using !");
+        System.out.println("Thanks for using the Banking Application!");
         System.exit(0);
     }
-
 }
 
-
-// main
+// Main
 public class Banking_Application
 {
     public static void main (String[] arr)
     {
+        // Move the question object outside the loop to avoid re-creation
+        Question_cls o1 = new Question_cls(4);
+        o1.question[0] = new StringBuilder("Deposit");
+        o1.question[1] = new StringBuilder("Withdrawal");
+        o1.question[2] = new StringBuilder("Balance Check");
+        o1.question[3] = new StringBuilder("Exit program");
+
+        // Create one instance of functions
+        functions funct = new functions();
 
         while (true) 
         {
-            Question_cls o1 = new Question_cls(4);o1.question[0] = new StringBuilder("Deposit");o1.question[1] = new StringBuilder("Withdrawal");o1.question[2] = new StringBuilder("Balance Check");o1.question[3] = new StringBuilder("Exit program");
             o1.printAll();
-            
 
-            // asking input
-            functions funct = new functions();
-            System.err.println("Enter the from 1 to 4 :");
+            // Asking input
+            System.err.println("Enter a value from 1 to 4:");
             int option = functions.ErrorCheck(1, 4);
 
-
-            // options based functions are called
+            // Options based functions are called
             switch (option) 
             {
-                case 1 ->
-                {
-                    System.err.println("Enter the Deposit amount (limit only 10,000) :");
+                case 1 -> {
+                    System.err.println("Enter the deposit amount (limit: Rs. 10,000):");
                     int amount_deposit = functions.ErrorCheck(1, 10000);
                     funct.Deposit(amount_deposit);
                 }
-                case 2 -> 
-                {
-                    System.err.println("Enter the WithDraw amount (limit only 10,000):");
+                case 2 -> {
+                    System.err.println("Enter the withdraw amount (limit: Rs. 10,000):");
                     int amount_withdraw = functions.ErrorCheck(1, 10000);
                     funct.Withdrawal(amount_withdraw);
                 }
                 case 3 -> funct.BalanceCheck();
                 case 4 -> funct.Exit();
-                default -> 
-                {    
-                }
             }
-            
         }
     }
 }
