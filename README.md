@@ -1,2 +1,1 @@
-TASK 2 :
-   CodeAlpha_Banking_Application
+﻿# TASK 2: CodeAlpha_Online_Quiz_Platform
